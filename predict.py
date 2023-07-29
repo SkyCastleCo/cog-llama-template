@@ -126,6 +126,12 @@ class Predictor(BasePredictor):
             ):
                 cur_id = output.item()
 
+                # Break if previous token id was 13 (newline) and current id is 2659 (user)
+                if previous_token_id == 13 and cur_id == 2659:
+                    break
+
+                previous_token_id = cur_id  # Store the current token id to check in the next iteration
+
                 # in order to properly handle spaces, we need to do our own tokenizing. Fun!
                 # we're building up a buffer of sub-word / punctuation tokens until we hit a space, and then yielding whole words + punctuation.
                 cur_token = self.tokenizer.convert_ids_to_tokens(cur_id)
