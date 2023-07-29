@@ -115,6 +115,7 @@ class Predictor(BasePredictor):
         with torch.inference_mode() and torch.autocast("cuda"):
             first_token_yielded = False
             prev_ids = []
+            previous_token_id = None  # This stores the previous token id so we can look for `\nUser:`
 
             for output in self.model.generate(
                 input_ids=input,
